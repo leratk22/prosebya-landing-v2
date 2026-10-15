@@ -1,0 +1,631 @@
+/* Просебя · лендинг · шапка, баннер «Остаёмся на связи», hero и блок «Для сотрудника»
+   Имена токенов совпадают с Paper-файлом «Аварийный флоу — дизайн-система и экраны».
+   Дизайн: десктоп 1440, мобильная 375. Брейкпоинт — 960px. */
+
+/* ---------- Шрифт ---------- */
+@font-face {
+  font-family: "Euclid Circular A";
+  src: url("../fonts/EuclidCircularA-Regular-WebXL.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular A";
+  src: url("../fonts/EuclidCircularA-Medium-WebXL.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Euclid Circular A";
+  src: url("../fonts/EuclidCircularA-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* ---------- Токены ---------- */
+:root {
+  --font-sans: "Euclid Circular A", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-fg-primary: #22263b;
+  --color-fg-inverted-primary: #ffffff;
+  --color-fg-inverted-secondary: rgba(255, 255, 255, 0.8);
+  --color-bg-accent-brand: #ffb800;
+  --color-bg-accent: #344079;
+
+  /* токены сайта prosebya.ru, которых нет в дизайн-системе записи */
+  --color-bg-page: #fff9e6;
+  --color-bg-brand: #fedb50;
+  --color-bg-brand-hover: #fdd23a;
+  --color-bg-marker: #ffe08a;
+  --color-fg-hint: rgba(0, 0, 0, 0.3);
+
+  --radius-full: 1000px;
+  --page-width: 1440px;
+  --page-gutter: 64px;
+}
+
+/* ---------- База ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg-page);
+  color: var(--color-black);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-bg-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Кнопки ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.btn--brand {
+  height: 37px;
+  padding: 0 15px;
+  border-radius: 30px;
+  background: var(--color-bg-brand);
+  color: var(--color-black);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 20px;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+.btn--brand:hover {
+  background: var(--color-bg-brand-hover);
+}
+
+/* вторичная кнопка на синем фоне: не спорит с жёлтой кнопкой в шапке */
+.btn--ghost-inverted {
+  display: none;
+  gap: 20px;
+  height: 56px;
+  padding: 0 8px 0 28px;
+  border: 2px solid var(--color-white);
+  border-radius: var(--radius-full);
+  color: var(--color-fg-inverted-primary);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 24px;
+  transition: background-color 0.15s;
+}
+.btn--ghost-inverted:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.btn--ghost-inverted .btn__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-white);
+  color: var(--color-bg-accent);
+}
+
+/* ---------- Шапка ---------- */
+/* .header держит место в потоке, а .header__bar при прокрутке становится закреплённой панелью */
+.header {
+  position: relative;
+  height: 87px;
+}
+
+.header__bar {
+  position: relative;
+  z-index: 60;
+}
+
+.header__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: var(--page-width);
+  height: 87px;
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.header__logo img {
+  width: 139px;
+  height: 39px;
+}
+
+/* закреплённая панель: как на prosebya.ru — белая, выезжает сверху за 450 мс */
+.header__bar.is-fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: var(--color-white);
+  animation: header-in 0.45s linear;
+}
+.header__bar.is-leaving {
+  animation: header-out 0.45s linear forwards;
+}
+
+@keyframes header-in {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes header-out {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@media (min-width: 960px) {
+  .header__bar.is-fixed .header__inner {
+    height: 54px;
+  }
+  .header__bar.is-fixed .header__logo img {
+    width: 108px;
+    height: 30px;
+  }
+  .header__bar.is-fixed .nav__link {
+    font-size: 14px;
+  }
+  .header__bar.is-fixed .nav__cta {
+    font-weight: 500;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__bar.is-fixed,
+  .header__bar.is-leaving {
+    animation-duration: 0.01s;
+  }
+}
+
+.header__burger {
+  display: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav__link {
+  font-size: 17px;
+  line-height: 26px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav__link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-bg-accent-brand);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
+
+/* ---------- Баннер: платформа недоступна ---------- */
+/* десктоп: плашка по ширине вёрстки (вровень с логотипом и кнопкой шапки), «временный сервис» — ссылка */
+.notice {
+  width: calc(100% - 2 * var(--page-gutter));
+  max-width: calc(var(--page-width) - 2 * var(--page-gutter));
+  margin: 36px auto 0;
+  padding: 14px 24px;
+  border-radius: 12px;
+  background: var(--color-bg-accent);
+  color: var(--color-white);
+  font-size: 18px;
+  line-height: 26px;
+  text-align: center;
+}
+
+.notice__text {
+  color: var(--color-fg-inverted-secondary);
+}
+
+.notice__title {
+  color: var(--color-white);
+  font-weight: 600;
+}
+.notice__title::after {
+  content: ".";
+}
+
+.notice__link {
+  color: var(--color-white);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.notice__link:hover {
+  text-decoration-color: var(--color-bg-brand);
+}
+
+/* ---------- Коллажи (картинки позиционируются в % от коробки коллажа) ---------- */
+.collage {
+  position: relative;
+}
+.collage img {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  max-width: none;
+  height: auto;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  max-width: var(--page-width);
+  min-height: 738px;
+  margin: 0 auto;
+  overflow-x: clip;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  padding: 61px var(--page-gutter) 134px;
+}
+
+.hero__title {
+  isolation: isolate;
+  max-width: 7.8em;
+  font-size: clamp(40px, 4.514vw, 65px);
+  font-weight: 500;
+  line-height: 1.046;
+}
+
+/* жёлтый маркер под словом «силу» */
+.mark {
+  position: relative;
+  white-space: nowrap;
+}
+.mark::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0.43em;
+  right: -0.15em;
+  left: -0.15em;
+  height: 0.83em;
+  background: url("https://static.tildacdn.com/tild3637-6562-4265-a432-396663383732/prsb-b2b-elem-1-min.png") center / 100% 100% no-repeat;
+}
+
+.hero__lead {
+  max-width: 395px;
+  margin-top: 37px;
+  font-size: 20px;
+  line-height: 31px;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  width: 374px;
+  height: 85px;
+  margin-top: 57px;
+  padding: 0 10px;
+  border-radius: 57px;
+  background: var(--color-bg-brand);
+  color: var(--color-black);
+  text-decoration: none;
+  transition: background-color 0.15s;
+}
+.cta:hover {
+  background: var(--color-bg-brand-hover);
+}
+.cta__icon {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-bg-accent-brand);
+  color: var(--color-white);
+}
+.cta__label {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 19px;
+  text-align: center;
+}
+
+.hero__brand {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  margin-top: 48px;
+}
+.hero__brand img {
+  width: 184px;
+  height: 50px;
+}
+.hero__brand p {
+  color: var(--color-fg-hint);
+  font-size: 17px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.collage--hero {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 66.667%;
+  aspect-ratio: 960 / 738;
+  transform: translateY(-50%);
+}
+
+/* ---------- Блок «Для сотрудника» ---------- */
+.employee {
+  display: grid;
+  grid-template-columns: 700fr 740fr;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  overflow-x: clip;
+}
+
+.employee__text {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 134px var(--page-gutter) 0 36px;
+}
+
+.collage--employee {
+  grid-column: 1;
+  grid-row: 1;
+  aspect-ratio: 700 / 657;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 182px;
+  height: 47px;
+  border: 3px solid var(--color-bg-accent-brand);
+  border-radius: 100px;
+  font-size: 17px;
+  line-height: 26px;
+}
+
+.employee__title {
+  margin-top: 40px;
+  font-size: clamp(40px, 4.514vw, 65px);
+  font-weight: 500;
+  line-height: 1.046;
+}
+
+/* ---------- Мобильная версия ---------- */
+@media (max-width: 959px) {
+  /* шапка и меню */
+  .header {
+    height: 44px;
+  }
+  .header__inner {
+    height: 44px;
+    padding: 0 25px 0 20px;
+  }
+  .header__logo img {
+    width: 96px;
+    height: 27px;
+  }
+  .header__burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    width: 39px;
+    height: 44px;
+    padding: 6px 0 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+  .header__burger span {
+    display: block;
+    width: 39px;
+    height: 2px;
+    background: var(--color-bg-accent-brand);
+  }
+  .nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 32px 20px 40px;
+    background: var(--color-white);
+  }
+  .nav.is-open {
+    display: flex;
+  }
+  .nav__link {
+    font-size: 24px;
+    line-height: 37px;
+  }
+  .nav__cta {
+    justify-content: center;
+    height: 57px;
+    margin-top: 12px;
+    border-radius: 30px;
+  }
+
+  /* баннер: полоса на всю ширину, единая фраза, справа круг со стрелкой */
+  .notice {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 16px 20px;
+    border-radius: 0;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: left;
+  }
+  .btn--ghost-inverted {
+    display: inline-flex;
+    flex-shrink: 0;
+    justify-content: center;
+    gap: 0;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    background: var(--color-white);
+    color: var(--color-bg-accent);
+  }
+  .btn--ghost-inverted:hover {
+    background: rgba(255, 255, 255, 0.88);
+  }
+  .btn--ghost-inverted .btn__label {
+    display: none;
+  }
+  .btn--ghost-inverted .btn__icon {
+    width: auto;
+    height: auto;
+    background: none;
+  }
+
+  /* hero: заголовок, подзаголовок → коллаж → кнопка → логотип группы */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 39px 20px 70px;
+  }
+  .hero__content {
+    display: contents;
+  }
+  .hero__title {
+    order: 1;
+    font-size: 40px;
+    line-height: 42px;
+  }
+  .hero__lead {
+    order: 2;
+    max-width: none;
+    margin-top: 32px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .collage--hero {
+    position: relative;
+    top: auto;
+    right: auto;
+    order: 3;
+    align-self: center;
+    width: min(calc(100% + 40px), 560px);
+    aspect-ratio: 375 / 361;
+    margin-top: 48px;
+    transform: none;
+  }
+  .cta {
+    order: 4;
+    width: 100%;
+    height: 73px;
+    margin-top: 0;
+  }
+  .cta__icon {
+    width: 47px;
+    height: 47px;
+    margin-left: 3px;
+  }
+  .cta__icon svg {
+    width: 15px;
+    height: 16px;
+  }
+  .cta__label {
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .hero__brand {
+    order: 5;
+    gap: 40px;
+    margin-top: 38px;
+  }
+  .hero__brand img {
+    width: 121px;
+    height: 33px;
+  }
+  .hero__brand p {
+    font-size: 13px;
+    line-height: 16px;
+  }
+
+  .collage img {
+    left: var(--ml);
+    top: var(--mt);
+    width: var(--mw);
+  }
+
+  /* блок «Для сотрудника» */
+  .employee {
+    display: flex;
+    flex-direction: column;
+    padding: 35px 20px 0;
+  }
+  .employee__text {
+    padding: 0;
+  }
+  .tag {
+    width: 154px;
+    height: 35px;
+    border-width: 2px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .employee__title {
+    margin-top: 24px;
+    font-size: 38px;
+    line-height: 40px;
+  }
+  .collage--employee {
+    align-self: center;
+    width: min(calc(100% + 40px), 560px);
+    aspect-ratio: 375 / 435;
+    margin-top: 16px;
+  }
+}
